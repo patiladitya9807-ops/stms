@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f4f8f5;
+  --surface: #ffffff;
+  --surface-soft: #eaf3ec;
+  --text: #122025;
+  --text-muted: #4f6470;
+  --accent: #0fa958;
+  --accent-2: #00c2c7;
+  --accent-soft: #d6f6e5;
+  --accent-contrast: #071910;
+  --border: #c8d8cf;
+  --danger: #d74343;
+  --warning: #f4a625;
+  --success: #1ea86b;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-bricolage);
+  --font-mono: var(--font-space-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-theme="dark"] {
+  --bg: #0d1720;
+  --surface: #111c28;
+  --surface-soft: #152433;
+  --text: #ebf3f7;
+  --text-muted: #95acb9;
+  --accent: #4ade80;
+  --accent-2: #40c4ff;
+  --accent-soft: #173727;
+  --accent-contrast: #06110b;
+  --border: #24374a;
+  --danger: #ff6666;
+  --warning: #ffc857;
+  --success: #36c788;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html,
+body {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at 20% 0%, color-mix(in oklab, var(--accent), transparent 84%), transparent 45%),
+    radial-gradient(circle at 80% 20%, color-mix(in oklab, var(--accent-2), transparent 88%), transparent 40%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-bricolage), "Segoe UI", sans-serif;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent), transparent 70%);
+}
+
+a,
+button {
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  a,
+  button {
+    cursor: auto;
+  }
+}
+
+.sport-card {
+  transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+}
+
+.sport-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 38px rgba(7, 21, 30, 0.13);
+  border-color: color-mix(in oklab, var(--accent), var(--border) 65%);
+}
+
+.slot-chip {
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.slot-chip:active {
+  transform: scale(0.97);
+}
+
+.fade-mask {
+  mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+}
+
+@keyframes subtle-float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.floaty {
+  animation: subtle-float 3s ease-in-out infinite;
 }

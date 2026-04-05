@@ -1,65 +1,124 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { motion, useInView } from "framer-motion";
+import { ArrowRight, Building2, CalendarClock, Sparkles, Trophy } from "lucide-react";
+import { useRef } from "react";
+import { ReviewSummarizer } from "@/components/ai/review-summarizer";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { useCountUp } from "@/hooks/use-count-up";
+
+function CountUpStat({ value, label }: { value: number; label: string }) {
+  const targetRef = useRef<HTMLDivElement | null>(null);
+  const inView = useInView(targetRef, { once: true, amount: 0.7 });
+  const count = useCountUp(inView ? value : 0, 1200);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div ref={targetRef}>
+      <Card className="p-4 text-center">
+        <p className="text-3xl font-black text-(--accent)">{count.toLocaleString()}</p>
+        <p className="mt-1 text-sm text-(--text-muted)">{label}</p>
+      </Card>
+    </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <div className="space-y-8 pb-10">
+      <section className="relative overflow-hidden rounded-4xl border border-(--border) bg-(--surface) p-6 sm:p-10">
+        <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-[var(--accent)/0.12] blur-3xl" />
+        <div className="absolute bottom-0 left-20 h-48 w-48 rounded-full bg-[var(--accent-2)/0.14] blur-3xl" />
+
+        <Badge>SportSpot Mumbai</Badge>
+        <h1 className="mt-4 max-w-2xl text-4xl font-black leading-tight text-(--text) sm:text-5xl">
+          Find venues. Book slots. Run tournaments. All in one city-ready platform.
+        </h1>
+        <p className="mt-4 max-w-2xl text-base text-(--text-muted) sm:text-lg">
+          A complete sports operations stack for players, venue owners, and organizers across Mumbai zones.
+        </p>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link href="/discover">
+            <Button size="lg">
+              Explore Venues
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+          <Link href="/tournaments/create">
+            <Button variant="secondary" size="lg">
+              Create Tournament
+            </Button>
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <CountUpStat value={100} label="Venues Listed" />
+        <CountUpStat value={12450} label="Bookings Completed" />
+        <CountUpStat value={730} label="Tournaments Hosted" />
+        <CountUpStat value={96} label="Avg Fill Rate %" />
+      </section>
+
+      <section className="grid gap-4 lg:grid-cols-3">
+        {[
+          {
+            icon: Building2,
+            title: "Smart Venue Discovery",
+            body: "Filter by sport, zone, budget, ratings, amenities, and real-time slot status.",
+          },
+          {
+            icon: CalendarClock,
+            title: "Fast Booking Workflow",
+            body: "Pick sport, slot, team size, and confirm payment flow in under two minutes.",
+          },
+          {
+            icon: Trophy,
+            title: "Tournament Engine",
+            body: "Auto fixtures, live score updates, brackets, and standings for every format.",
+          },
+        ].map((feature, index) => {
+          const Icon = feature.icon;
+          return (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.08 }}
+            >
+              <Card className="sport-card h-full p-5">
+                <Icon className="h-8 w-8 text-(--accent)" />
+                <h2 className="mt-3 text-lg font-bold">{feature.title}</h2>
+                <p className="mt-2 text-sm text-(--text-muted)">{feature.body}</p>
+              </Card>
+            </motion.div>
+          );
+        })}
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+        <ReviewSummarizer />
+        <Card className="p-5">
+          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-(--accent)">AI Match Commentary</p>
+          <h3 className="mt-1 text-xl font-bold">Live narrative for tournament momentum</h3>
+          <div className="mt-4 rounded-2xl border border-(--border) bg-(--surface-soft) p-4 text-sm text-(--text-muted)">
+            <p className="font-semibold text-(--text)">Semi-final Insight</p>
+            <p className="mt-2">
+              RedWolves enter with high xG conversion from wide channels, while City Kicks rely on compact transitions.
+              Expect a high-intensity midfield press in the opening 20 minutes.
+            </p>
+          </div>
+          <Link href="/tournaments" className="mt-4 inline-flex">
+            <Button variant="secondary">
+              Open Tournament Hub
+              <Sparkles className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+        </Card>
+      </section>
     </div>
   );
 }

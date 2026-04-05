@@ -1,0 +1,35 @@
+{
+  "name": "SportSpot Mumbai",
+  "short_name": "SportSpot",
+  "description": "Find, book, and play at Mumbai sports venues with tournament management.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1720",
+  "theme_color": "#16a34a",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book a Turf",
+      "short_name": "Book",
+      "url": "/discover"
+    },
+    {
+      "name": "My Schedule",
+      "short_name": "Schedule",
+      "url": "/dashboard"
+    }
+  ]
+}
