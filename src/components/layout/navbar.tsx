@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search } from "lucide-react";
+import { Search, Download } from "lucide-react";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { useInstallPrompt } from "@/hooks/use-install-prompt";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -16,10 +17,11 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const { canInstall, handleInstall } = useInstallPrompt();
 
   return (
     <header className="sticky top-0 z-40 border-b border-(--border) bg-[var(--surface)/0.85] backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex w-full max-w-8xl items-center gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="inline-flex items-center gap-2">
           <span className="h-9 w-9 rounded-xl bg-linear-to-br from-(--accent) to-(--accent-2)" />
           <div>
@@ -52,6 +54,18 @@ export function Navbar() {
           <Search className="h-4 w-4" />
           Quick Search
         </button>
+
+        {canInstall && (
+          <button
+            type="button"
+            onClick={handleInstall}
+            className="hidden h-10 items-center gap-2 rounded-full border border-(--accent) bg-(--accent-soft) px-4 text-sm font-medium text-(--accent) transition hover:bg-(--accent) hover:text-white md:inline-flex"
+            title="Install SportSpot App"
+          >
+            <Download className="h-4 w-4" />
+            <span className="hidden lg:inline">Install</span>
+          </button>
+        )}
 
         <ThemeToggle />
       </div>
